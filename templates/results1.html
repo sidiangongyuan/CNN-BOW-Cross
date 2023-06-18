@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Result</title>
+{% if styles %}
+<link rel="stylesheet" href="styles.css">
+{% endif %}
+</head>
+<body>
+
+<h1>Result</h1>
+
+{% set page = request.args.get('page', 1, type=int) %}
+{% for i in range((image_urls|length - 1) // 10 + 1) %}
+<div class="image-container">
+{% for image in image_urls[(i*10):(i+1)*10] %}
+<img src="{{ image }}">
+{% endfor %}
+</div>
+{% endfor %}
+
+<div class="pagination">
+{% if page > 1 %}
+<a href="{{ url_for('result', page=page-1) }}">&laquo;</a>
+{% endif %}
+{% for i in range(1, (images|length - 1) // 10 + 2) %}
+<a href="{{ url_for('result', page=i) }}">{{ i }}</a>
+{% endfor %}
+{% if page < (images|length - 1) // 10 + 1 %}
+<a href="{{ url_for('result', page=page+1) }}">&raquo;</a>
+{% endif %}
+</div>
+
+</body>
+
+
+<!--<html lang="zh-cn">-->
+<!--<head>-->
+<!--  <meta charset="UTF-8">-->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--  <title>搜索结果</title>-->
+<!--  &lt;!&ndash; 引入 Bootstrap CSS 文件 &ndash;&gt;-->
+<!--  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
+<!--  &lt;!&ndash; 引入 jQuery 文件 &ndash;&gt;-->
+<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--  &lt;!&ndash; 引入 Bootstrap JavaScript 文件 &ndash;&gt;-->
+<!--  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--  <div class="container mt-5">-->
+<!--    <h1 class="text-center mb-4">搜索结果</h1>-->
+<!--    <div class="row">-->
+<!--      {% for i in range(0, 10) %}-->
+<!--        <div class="col-md-2 mb-4">-->
+<!--          <img src="{{ image_urls[i] }}" class="img-fluid" alt="图片 {{ i+1 }}">-->
+<!--        </div>-->
+<!--        {% if i == 4 %}-->
+<!--          </div>-->
+<!--          <div class="row">-->
+<!--        {% endif %}-->
+<!--      {% endfor %}-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</body>-->
+
+
+
+<!--<body >-->
+<!--<div id="content">-->
+<!--    <h1>Image List</h1>-->
+<!--    {% for img_name,tag_list in zip(img_list,tags_list) %}-->
+<!--      <li><img src="{{ img_name }}" alt="img_name">-->
+<!--          {% for tag in tag_list %}-->
+<!--          <label for="name">{{tag}}</label>-->
+<!--          {% endfor %}-->
+<!--      </li>-->
+<!--    {% endfor %}-->
+<!--    </div>-->
+<!--</body>-->
+
+<!-- 清空按钮 -->
+<button id="clear-btn">清空</button>
+<!-- JavaScript代码 -->
+<script>
+  // 清空函数
+  function clearPage() {
+    // 删除当前页面上的所有图片
+    const images = document.querySelectorAll('img');
+for (let i = 0; i < images.length; i++) {
+  images[i].parentNode.removeChild(images[i]);
+}
+
+    // 返回前一个页面
+    history.back();
+  }
+
+  // 绑定清空函数到清空按钮的点击事件上
+  document.querySelector('#clear-btn').addEventListener('click', clearPage);
+</script>
+</html>
